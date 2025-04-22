@@ -2,7 +2,7 @@ import requests
 import configparser
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('../config/config.ini')
 username = config['VARIABLEENV']['USERNAME']
 password = config['VARIABLEENV']['PASSWORD']
 

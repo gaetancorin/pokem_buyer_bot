@@ -12,6 +12,7 @@ session = requests.Session()
 def get_proof_of_connection():
     url = "https://www.cardshunter.fr/mon-compte/"
     response = session.get(url)
+    print("Statut:", response.status_code)
     soup = BeautifulSoup(response.text, 'html.parser')
     proof_id = soup.find('input', {'id': 'woocommerce-login-nonce'})['value']
     print("proof id = ", proof_id)
@@ -51,10 +52,10 @@ def connect_by_cookies():
 
 
 if __name__ == "__main__":
-    print("----GET PROOF OF CONNECTION----")
+    print("---- GET PROOF_ID OF CONNECTION ----")
     proof_id = get_proof_of_connection()
-    print("----TEST POST----")
+    print("---- GET COOKIES ----")
     ask_for_cookies(proof_id)
-    print("----TEST GET----")
+    print("---- TEST CONNECTION ----")
     connect_by_cookies()
-    print("----END-----")
+    print("---- END -----")

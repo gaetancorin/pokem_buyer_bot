@@ -9,7 +9,18 @@ config = configparser.ConfigParser()
 config.read('../config/config.ini')
 url_product_card = config['VARIABLEENV']['URLPRODUCTCARD']
 
-def verify_disponibility(compteur, time_start, write_html=False):
+def live_check_disponibility():
+    compteur = 0
+    time_start = datetime.datetime.now()
+    response = 200
+    button = None
+    # while response == 200:
+    while response == 200 and button == None:
+        response, button = check_disponibility(compteur, time_start, write_html=False)
+    compteur += 1
+    # time.sleep(0.1)
+
+def check_disponibility(compteur, time_start, write_html=False):
     time_now = datetime.datetime.now()
     time_start_compteur = time_now - time_start
     response = requests.get(url_product_card)
@@ -30,13 +41,5 @@ def verify_disponibility(compteur, time_start, write_html=False):
 
 if __name__ == "__main__":
     print("---- START VERIFY DISPONIBILITY ----")
-    compteur= 0
-    time_start = datetime.datetime.now()
-    response = 200
-    button = None
-    #while response == 200:
-    while response == 200 and button == None:
-        response, button = verify_disponibility(compteur, time_start, write_html=False)
-    compteur +=1
-        # time.sleep(0.1)
+    live_check_disponibility()
     print("---- END -----")

@@ -1,4 +1,4 @@
-import requests
+import App.session_manager as session_manager
 import configparser
 from bs4 import BeautifulSoup
 
@@ -7,10 +7,10 @@ config.read('../config/config.ini')
 username = config['VARIABLEENV']['USERNAME']
 password = config['VARIABLEENV']['PASSWORD']
 
-session = requests.Session()
 
 def get_proof_of_connection():
     url = "https://www.cardshunter.fr/mon-compte/"
+    session = session_manager.get_session()
     response = session.get(url)
     print("Statut:", response.status_code)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -30,6 +30,7 @@ def ask_for_cookies(proof_id):
         "_wp_http_referer": "/mon-compte/",
         "login": "Se connecter"
     }
+    session = session_manager.get_session()
     response = session.post(url, data=data)
 
     # Afficher le contenu de la réponse
@@ -41,6 +42,7 @@ def ask_for_cookies(proof_id):
 
 def connect_by_cookies():
     url = "https://www.cardshunter.fr/mon-compte/"
+    session = session_manager.get_session()
     response = session.get(url)
     print("Statut:", response.status_code)
     # print("Contenu:", response.text)

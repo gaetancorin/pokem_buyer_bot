@@ -28,4 +28,6 @@ if __name__ == "__main__":
     url_to_post, product_id, gtm4wp_product_data = result
     print("---- ADD TO CART (connect)----")
     buy_product.product_in_cart(url_to_post, product_id, gtm4wp_product_data)
+    print("---- CHECK ORDER VALIDATION (connect)----")
+    # buy_product.check_order_validation()
     print("---- END -----")

@@ -52,16 +52,61 @@ def product_in_cart(url_to_post, product_id, gtm4wp_product_data):
     for cookie in session.cookies:
         print("session | ", cookie.name, "=", cookie.value)
 
-    # print(response.text)
-    # soup = BeautifulSoup(response.text, "html.parser")
-    # div_product_name = soup.find('div', {'class': 'elementor-menu-cart__product-name'})
-    # href = div_product_name.find('a')['href']
-    # print(href, "==", url_to_post)
-    #
-    # div_product_quantity = soup.find('div', {'class': 'elementor-menu-cart__product-price'})
-    # product_quantity = div_product_quantity.find('span', {'class': 'product-quantity'}).text.strip()
-    # print("product_quantity:", product_quantity)
 
+
+    #################################""" 2
+    response = session.post(url, data=data)
+    # Afficher le contenu de la réponse
+    print("Statut:", response.status_code)
+    # print("Contenu:", response.text)
+    print("Cookies reçus :")
+    for cookie in session.cookies:
+        print("session | ", cookie.name, "=", cookie.value)
+    # ################################""" 3
+    # response = session.post(url, data=data)
+    # # Afficher le contenu de la réponse
+    # print("Statut:", response.status_code)
+    # # print("Contenu:", response.text)
+    # print("Cookies reçus :")
+    # for cookie in session.cookies:
+    #     print("session | ", cookie.name, "=", cookie.value)
+    # ################################""" 4
+    # response = session.post(url, data=data)
+    # # Afficher le contenu de la réponse
+    # print("Statut:", response.status_code)
+    # # print("Contenu:", response.text)
+    # print("Cookies reçus :")
+    # for cookie in session.cookies:
+    #     print("session | ", cookie.name, "=", cookie.value)
+
+
+
+
+    print(response.text)
+    soup = BeautifulSoup(response.text, "html.parser")
+    number_products_in_cart = soup.find("span", class_="elementor-button-icon-qty").get("data-counter")
+    print("number products in cart:", number_products_in_cart)
+
+    price_in_cart = soup.find("span", class_="elementor-button-text")
+    price_in_cart = price_in_cart.find("span", class_="woocommerce-Price-amount amount")
+    price_in_cart = price_in_cart.find("bdi").find(text=True, recursive=False).strip()
+    print("price in cart:", price_in_cart)
+
+    price_to_one_product = soup.find("p", class_="price")
+    price_to_one_product = price_to_one_product.find("span", class_="woocommerce-Price-amount amount")
+    price_to_one_product = price_to_one_product.find("bdi").find(text=True, recursive=False).strip()
+    print("price to one product:", price_to_one_product)
+
+    if number_products_in_cart == "1" and price_in_cart == price_to_one_product:
+        print("Success one product in cart")
+    elif int(number_products_in_cart) > 1:
+        print("TO MANY PRODUCTS IN CART. There is", number_products_in_cart, "products.")
+    elif price_in_cart != price_to_one_product:
+        print("PRICE IN CART IS NOT PRICE FOR EXPECTED PRODUCT")
+
+
+
+def check_order_validation():
     url = "https://www.cardshunter.fr/commander/"
     session = session_manager.get_session()
     response = session.get(url)

@@ -22,12 +22,16 @@ if __name__ == "__main__":
     verify_disponibility.live_check_disponibility()
 
     print("---- PREPARE TO CART (connect)----")
-    result = None
-    while not result:
-        result = buy_product.prepare_to_cart(write_html=True)
-    url_to_post, product_id, gtm4wp_product_data = result
+    result_1 = None
+    while not result_1:
+        result_1 = buy_product.prepare_to_cart(write_html=True)
+    url_to_post, product_id, gtm4wp_product_data = result_1
     print("---- ADD TO CART (connect)----")
-    buy_product.product_in_cart(url_to_post, product_id, gtm4wp_product_data)
+    result_2 = buy_product.product_in_cart(url_to_post, product_id, gtm4wp_product_data)
+    if result_2 == None:
+        print("verify product")
+        buy_product.verify_product_in_cart()
+
     print("---- CHECK ORDER VALIDATION (connect)----")
     # buy_product.check_order_validation()
     print("---- END -----")

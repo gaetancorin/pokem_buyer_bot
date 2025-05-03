@@ -1,4 +1,5 @@
-import App.session_manager as session_manager
+import App.utils.session_manager as session_manager
+import App.utils.cookies_manager as cookies_manager
 import configparser
 from bs4 import BeautifulSoup
 
@@ -25,7 +26,6 @@ def ask_for_cookies(proof_id):
     data = {
         "username": username,
         "password": password,
-        # "woocommerce-login-nonce": proof_id,
         "woocommerce-login-nonce": proof_id,
         "_wp_http_referer": "/mon-compte/",
         "login": "Se connecter"
@@ -39,6 +39,7 @@ def ask_for_cookies(proof_id):
     print("Cookies reçus :")
     for cookie in session.cookies:
         print("session | ", cookie.name, "=", cookie.value)
+        cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain = cookie.domain, path= cookie.path)
 
 def connect_by_cookies():
     url = "https://www.cardshunter.fr/mon-compte/"
@@ -46,6 +47,10 @@ def connect_by_cookies():
     response = session.get(url)
     print("Statut:", response.status_code)
     # print("Contenu:", response.text)
+    print("Cookies reçus :")
+    for cookie in session.cookies:
+        print("session | ", cookie.name, "=", cookie.value)
+        cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain = cookie.domain, path= cookie.path)
     soup = BeautifulSoup(response.text, 'html.parser')
     if "Bonjour" in soup.get_text() and "Déconnexion" in soup.get_text():
         print("Connection Success")

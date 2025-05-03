@@ -22,6 +22,10 @@ def live_check_disponibility():
         response, button, url_to_post, product_id, gtm4wp_product_data, price_to_one_product = check_disponibility(compteur, time_start, write_html=False)
         compteur += 1
         # time.sleep(0.1)
+
+        if response == 200 and button is not None:
+            if url_to_post is None or product_id is None or gtm4wp_product_data is None or price_to_one_product is None:
+                print("FATAL ERROR ON HTML scrapping even if status_code 200 and button OK")
     return url_to_post, product_id, gtm4wp_product_data, price_to_one_product
 
 

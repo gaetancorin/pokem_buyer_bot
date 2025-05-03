@@ -19,19 +19,18 @@ if __name__ == "__main__":
     generate_connection.connect_by_cookies()
 
     print("---- LOOP CHECKING PRODUCT AVAILABILITY (without connect)----")
-    verify_disponibility.live_check_disponibility()
-
+    url_to_post, product_id, gtm4wp_product_data, price_to_one_product = verify_disponibility.live_check_disponibility()
     print("---- PREPARE TO CART (connect)----")
     result_1 = None
     while not result_1:
         result_1 = buy_product.prepare_to_cart(write_html=True)
-    url_to_post, product_id, gtm4wp_product_data = result_1
+    url_to_post, product_id, gtm4wp_product_data, price_one_product = result_1
     print("---- ADD TO CART (connect)----")
     result_2 = buy_product.product_in_cart(url_to_post, product_id, gtm4wp_product_data)
     if result_2 == None:
-        print("verify product")
-        buy_product.verify_product_in_cart()
+        print("--- verify product in cart -----")
+        order_validation = buy_product.check_order_validation(price_one_product)
 
     print("---- CHECK ORDER VALIDATION (connect)----")
-    # buy_product.check_order_validation()
+    buy_product.check_order_validation(price_one_product)
     print("---- END -----")

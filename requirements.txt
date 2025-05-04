@@ -1,6 +1,5 @@
 # python_version recommanded: 3_11
-flask
-flask_cors
-
 requests
 beautifulsoup4
+selenium
+undetected-chromedriver

@@ -17,4 +17,5 @@ def check_cookies():
     print(cookies_manager.get_cookies())
     for key, value in cookies_manager.get_cookies().items():
         print("cks_manager | ", key, "=", value)
+        #print("test domain:", value["domain"])
 

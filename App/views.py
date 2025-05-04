@@ -1,8 +1,8 @@
 import App.generate_connection as generate_connection
 import App.verify_disponibility as verify_disponibility
 import App.prepare_cart as prepare_cart
-import App.buy_cart as buy_cart
-import App.check_cookies as check_cookies
+import App.buy_cart2 as buy_cart2
+import App.toolbox.check_cookies as check_cookies
 import configparser
 
 config = configparser.ConfigParser()
@@ -19,6 +19,8 @@ if __name__ == "__main__":
     generate_connection.ask_for_cookies(proof_id)
     print("---- TEST CONNECTION ----")
     generate_connection.connect_by_cookies()
+    print("---- CLEAN CART ----")
+    generate_connection.clean_cart_if_product()
 
     print("---- LOOP CHECKING PRODUCT AVAILABILITY (without connect)----")
     url_to_post, product_id, gtm4wp_product_data, price_one_product = verify_disponibility.live_check_disponibility()
@@ -33,5 +35,6 @@ if __name__ == "__main__":
 
     print("---- BUY CART (connect)----")
     #buy_cart.place_order(price_one_product)
-    check_cookies.check_cookies()
+    #check_cookies.check_cookies()
+    buy_cart2.selenium()
     print("---- END -----")

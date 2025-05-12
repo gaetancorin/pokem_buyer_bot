@@ -5,6 +5,12 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 import configparser
 
+shipping_method ={}
+shipping_method['1'] = "shipping_method_0_lpc_sign58" # COLIS AVEC SIGNATURE
+shipping_method['2'] = "shipping_method_0_lpc_nosign1" # COLIS SANS SIGNATURE
+shipping_method['3'] = "shipping_method_0_fish_n_ships35" # COLIS LETTRE SUIVI
+shipping_method['4'] = "shipping_method_0_lpc_relay59" # COLIS POINT RETRAIT
+
 config = configparser.ConfigParser()
 config.read('../config/config.ini')
 PRENOM = config['VARIABLEFORM']['PRENOM']
@@ -20,6 +26,7 @@ NOM_PROPRIETAIRE_CARTE_BLEU = config['VARIABLEFORM']['NOM_PROPRIETAIRE_CARTE_BLE
 NUMERO_CARTE_BLEU = config['VARIABLEFORM']['NUMERO_CARTE_BLEU']
 DATE_EXPIRATION_CARTE_BLEU = config['VARIABLEFORM']['DATE_EXPIRATION_CARTE_BLEU'].replace("/", "").replace("_", "").replace("-", "")
 NUMERO_SECURITE_CARTE_BLEU = config['VARIABLEFORM']['NUMERO_SECURITE_CARTE_BLEU']
+METHODE_ENVOI = shipping_method[config['VARIABLEFORM']['METHODE_ENVOI']]
 
 def place_order_by_selenium():
     # Initialise solanium driver cookies with good url
@@ -39,117 +46,96 @@ def place_order_by_selenium():
     # Get purchase page, fill inputs and shop !
     driver.get("https://www.cardshunter.fr/commander/")
 
-    print("fill billing_first_name")
+    print("start fill billing_first_name (PRENOM)")
     billing_first_name = driver.find_element(By.ID, "billing_first_name")
     billing_first_name.clear()
     billing_first_name.send_keys(PRENOM)
 
-    print("fill billing_last_name")
+    print("start fill billing_last_name (NOM)")
     billing_last_name = driver.find_element(By.ID, "billing_last_name")
     billing_last_name.clear()
     billing_last_name.send_keys(NOM)
 
-    print("fill billing_country_element (FR)")
+    print("start fill billing_country_element (PAYS)")
     billing_country_element = driver.find_element(By.ID, "billing_country")
     billing_country_selector = Select(billing_country_element)
     billing_country_selector.select_by_value(PAYS)
 
-    print("fill billing_address_1")
+    print("start fill billing_address_1 (ADRESSE_NUMERO_NOM_RUE)")
     billing_address_1 = driver.find_element(By.ID, "billing_address_1")
     billing_address_1.clear()
     billing_address_1.send_keys(ADRESSE_NUMERO_NOM_RUE)
 
-    print("fill billing_address_2")
+    print("start fill billing_address_2 (ADRESSE_BATIMENT_APPARTEMENT)")
     billing_address_2 = driver.find_element(By.ID, "billing_address_2")
     billing_address_2.clear()
     billing_address_2.send_keys(ADRESSE_BATIMENT_APPARTEMENT)
 
-    print("fill billing_postcode")
+    print("start fill billing_postcode (CODE_POSTAL)")
     billing_postcode = driver.find_element(By.ID, "billing_postcode")
     billing_postcode.clear()
     billing_postcode.send_keys(CODE_POSTAL)
 
-    print("fill billing_city")
+    print("start fill billing_city (VILLE)")
     billing_city = driver.find_element(By.ID, "billing_city")
     billing_city.clear()
     billing_city.send_keys(VILLE)
 
-    print("fill billing_phone")
+    print("start fill billing_phone (TELEPHONE)")
     billing_phone = driver.find_element(By.ID, "billing_phone")
     billing_phone.clear()
     billing_phone.send_keys(TELEPHONE)
 
-    print("fill billing_email")
+    print("start fill billing_email (EMAIL)")
     billing_email = driver.find_element(By.ID, "billing_email")
     billing_email.clear()
     billing_email.send_keys(EMAIL)
 
-    print("fill shipping_first_name")
+    print("start fill shipping_first_name (PRENOM)")
     shipping_first_name = driver.find_element(By.ID, "shipping_first_name")
     shipping_first_name.clear()
     shipping_first_name.send_keys(PRENOM)
 
-    print("fill shipping_last_name")
+    print("start fill shipping_last_name (NOM)")
     shipping_last_name = driver.find_element(By.ID, "shipping_last_name")
     shipping_last_name.clear()
     shipping_last_name.send_keys(NOM)
 
-    print("fill shipping_country_element (FR)")
+    print("start fill shipping_country_element (PAYS)")
     shipping_country_element = driver.find_element(By.ID, "shipping_country")
     shipping_country_selector = Select(shipping_country_element)
     shipping_country_selector.select_by_value(PAYS)
 
-    print("fill shipping_address_1")
+    print("start fill shipping_address_1 (ADRESSE_NUMERO_NOM_RUE)")
     shipping_address_1 = driver.find_element(By.ID, "shipping_address_1")
     shipping_address_1.clear()
     shipping_address_1.send_keys(ADRESSE_NUMERO_NOM_RUE)
 
-    print("fill shipping_address_2")
+    print("start fill shipping_address_2 (ADRESSE_BATIMENT_APPARTEMENT)")
     shipping_address_2 = driver.find_element(By.ID, "shipping_address_2")
     shipping_address_2.clear()
     shipping_address_2.send_keys(ADRESSE_BATIMENT_APPARTEMENT)
 
-    print("fill shipping_postcode")
+    print("start fill shipping_postcode (CODE_POSTAL)")
     shipping_postcode = driver.find_element(By.ID, "shipping_postcode")
     shipping_postcode.clear()
     shipping_postcode.send_keys(CODE_POSTAL)
 
-    print("fill shipping_city")
+    print("start fill shipping_city (VILLE)")
     shipping_city = driver.find_element(By.ID, "shipping_city")
     shipping_city.clear()
     shipping_city.send_keys(VILLE)
 
-    print("fill shipping_phone")
+    print("start fill shipping_phone (TELEPHONE)")
     shipping_phone = driver.find_element(By.ID, "shipping_phone")
     shipping_phone.clear()
     shipping_phone.send_keys(TELEPHONE)
 
-    # COLIS AVEC SIGNATURE: "shipping_method_0_lpc_sign58"
-    # COLIS SANS SIGNATURE: "shipping_method_0_lpc_nosign1"
-    # COLIS LETTRE SUIVI: "shipping_method_0_fish_n_ships35"
-    # COLIS POINT RETRAIT: "shipping_method_0_lpc_relay59"
-    # (le point retrait doit être préenregistrer)
-
-    # print("click shipping method")
-    # # AVEC SIGNATURE
-    # radio_button = driver.find_element(By.ID, "shipping_method_0_lpc_sign58")
-    # driver.execute_script("arguments[0].click();", radio_button)
-    #
-    print("fill sans signature")
-    # SANS SIGNATURE
-    radio_button = driver.find_element(By.ID, "shipping_method_0_lpc_nosign1")
+    print("start fill shipping method (METHODE_ENVOI)")
+    radio_button = driver.find_element(By.ID, METHODE_ENVOI)
     driver.execute_script("arguments[0].click();", radio_button)
 
-    # print("fill point retrait")
-    # # POINT RETRAIT
-    # radio_button = driver.find_element(By.ID, "shipping_method_0_lpc_relay59")
-    # driver.execute_script("arguments[0].click();", radio_button)
-
-    # print("fill lettre suivi")
-    # # LETTRE SUIVI
-    # radio_button = driver.find_element(By.ID, "shipping_method_0_fish_n_ships35")
-    # driver.execute_script("arguments[0].click();", radio_button)
-
+    print("start fill cardholder (NOM_PROPRIETAIRE_CARTE_BLEU)")
     # go inside to frame for credit card holder name
     iframe = driver.find_element(By.ID, "cardholder")
     driver.switch_to.frame(iframe)
@@ -159,7 +145,7 @@ def place_order_by_selenium():
     # get out of frame
     driver.switch_to.default_content()
 
-
+    print("start fill credit-cart-number (NUMERO_CARTE_BLEU)")
     # go inside to frame for credit card number
     iframe = driver.find_element(By.ID, "pan")
     driver.switch_to.frame(iframe)
@@ -169,6 +155,7 @@ def place_order_by_selenium():
     # get out of frame
     driver.switch_to.default_content()
 
+    print("start fill expiration (DATE_EXPIRATION_CARTE_BLEU)")
     # go inside to frame for credit card expiration
     iframe = driver.find_element(By.ID, "exp")
     driver.switch_to.frame(iframe)
@@ -178,6 +165,7 @@ def place_order_by_selenium():
     # get out of frame
     driver.switch_to.default_content()
 
+    print("start fill cvv (NUMERO_SECURITE_CARTE_BLEU)")
     # go inside to frame for credit card secure number
     iframe = driver.find_element(By.ID, "cvv")
     driver.switch_to.frame(iframe)
@@ -186,8 +174,6 @@ def place_order_by_selenium():
     credit_card_secure_number.send_keys(NUMERO_SECURITE_CARTE_BLEU)
     # get out of frame
     driver.switch_to.default_content()
-
-
 
 
 

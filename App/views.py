@@ -1,7 +1,7 @@
 import App.generate_connection as generate_connection
 import App.verify_disponibility as verify_disponibility
 import App.prepare_cart as prepare_cart
-import App.buy_cart2 as buy_cart2
+import App.buy_cart as buy_cart
 import App.toolbox.check_cookies as check_cookies
 import configparser
 
@@ -34,7 +34,6 @@ if __name__ == "__main__":
     prepare_cart.check_order_validation(price_one_product)
 
     print("---- BUY CART (connect)----")
-    #buy_cart.place_order(price_one_product)
     #check_cookies.check_cookies()
-    buy_cart2.selenium()
+    buy_cart.place_order_by_selenium()
     print("---- END -----")

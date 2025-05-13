@@ -1,8 +1,8 @@
 import App.utils.cookies_manager as cookies_manager
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
+import time
 import configparser
 
 shipping_method ={}
@@ -27,6 +27,8 @@ NUMERO_CARTE_BLEU = config['VARIABLEFORM']['NUMERO_CARTE_BLEU']
 DATE_EXPIRATION_CARTE_BLEU = config['VARIABLEFORM']['DATE_EXPIRATION_CARTE_BLEU'].replace("/", "").replace("_", "").replace("-", "")
 NUMERO_SECURITE_CARTE_BLEU = config['VARIABLEFORM']['NUMERO_SECURITE_CARTE_BLEU']
 METHODE_ENVOI = shipping_method[config['VARIABLEFORM']['METHODE_ENVOI']]
+ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT = config['VARIABLEFORM']['ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT']
+NOM_ZONE_POINT_RELAIS  = config['VARIABLEFORM']['NOM_ZONE_POINT_RELAIS']
 
 def place_order_by_selenium():
     # Initialise solanium driver cookies with good url
@@ -131,10 +133,6 @@ def place_order_by_selenium():
     shipping_phone.clear()
     shipping_phone.send_keys(TELEPHONE)
 
-    print("start fill shipping method (METHODE_ENVOI)")
-    radio_button = driver.find_element(By.ID, METHODE_ENVOI)
-    driver.execute_script("arguments[0].click();", radio_button)
-
     print("start fill cardholder (NOM_PROPRIETAIRE_CARTE_BLEU)")
     # go inside to frame for credit card holder name
     iframe = driver.find_element(By.ID, "cardholder")
@@ -175,8 +173,61 @@ def place_order_by_selenium():
     # get out of frame
     driver.switch_to.default_content()
 
-
+    print("start fill shipping method (METHODE_ENVOI)")
+    radio_button = driver.find_element(By.ID, METHODE_ENVOI)
+    driver.execute_script("arguments[0].click();", radio_button)
+    if METHODE_ENVOI == 'shipping_method_0_lpc_relay59':
+        # POINT RELAIS
+        pickup_point_already_selected = False
+        pickup_button = driver.find_element(By.ID, "lpc_pick_up_widget_show_map")
+        if "Changer le point de retrait" in pickup_button.text:
+            # POINT RELAIS DEJA PRESELECTIONNE
+            pickup_name_selected = driver.find_element(By.CSS_SELECTOR, "div.lpc_pickup_info_address_name")
+            if NOM_ZONE_POINT_RELAIS in pickup_name_selected.text or pickup_name_selected.text in NOM_ZONE_POINT_RELAIS:
+                print("Good pickup-point already selected")
+                pickup_point_already_selected = True
+        if not pickup_point_already_selected:
+            # PAS DE POINT RELAIS PRESELECTIONNE OU QUI N EST PAS LE BON
+            print("Select pickup-point")
+            choose_pickup_point(driver)
 
     print("ok")
+
+def choose_pickup_point(driver):
+    print("click on select pickup-point button")
+    element = driver.find_element(By.ID, "lpc_pick_up_widget_show_map")
+    driver.execute_script("arguments[0].click();", element)
+    print("write address on pickup-point pop-up")
+    adress_input = driver.find_element(By.ID, "widget_colissimo_adresse")
+    adress_input.clear()
+    adress_input.send_keys(ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT)
+    print("select first address available on dynamic list")
+    table = driver.find_element(By.ID, "widget_colissimo_autocomplete")
+    time.sleep(3)
+    choose_first_adress = table.find_element(By.CSS_SELECTOR, "td.widget_colissimo_autocomplete_li")
+    driver.execute_script("arguments[0].click();", choose_first_adress)
+    print("click on loup element")
+    loup_element = driver.find_element(By.CLASS_NAME, "widget_colissimo_loupe_img")
+    driver.execute_script("arguments[0].click();", loup_element)
+    print("research on list pickup-point element by name")
+    time.sleep(3)
+    pickup_elements = driver.find_elements(By.CSS_SELECTOR, "div.widget_colissimo_PDR")
+    target_pickup_element = None
+    for pickup_element in pickup_elements:
+        try:
+            pickup_name = pickup_element.find_element(By.CSS_SELECTOR, "p.widget_colissimo_text_bold")
+            if NOM_ZONE_POINT_RELAIS in pickup_name.text.strip().upper():
+                target_pickup_element = pickup_element
+                print("find pickup-point: ", pickup_name.text.strip().upper())
+                break
+        except:
+            continue
+    print("open good pickup-point element")
+    button_for_open_right_element = target_pickup_element.find_element(By.CSS_SELECTOR, "img.widget_colissimo_icone_coche")
+    driver.execute_script("arguments[0].click();", button_for_open_right_element)
+    print("select good pickup-point element")
+    button_for_select_right_element = target_pickup_element.find_element(By.CSS_SELECTOR, "div.widget_colissimo_bouton_validation")
+    driver.execute_script("arguments[0].click();", button_for_select_right_element)
+    print("good pickup-point selected")
 
 

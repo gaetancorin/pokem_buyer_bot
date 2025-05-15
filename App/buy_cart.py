@@ -191,7 +191,12 @@ def place_order_by_selenium():
             print("Select pickup-point")
             choose_pickup_point(driver)
 
-    print("ok")
+    print("start Command Validation ")
+    button_validation = driver.find_element(By.ID, "place_order")
+    #driver.execute_script("arguments[0].click();", button_validation)
+
+    print("Command done")
+
 
 def choose_pickup_point(driver):
     print("click on select pickup-point button")

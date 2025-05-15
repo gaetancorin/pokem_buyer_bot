@@ -17,7 +17,7 @@ def product_in_cart(url_to_post, product_id, gtm4wp_product_data):
     session = session_manager.get_session()
     #######################################################
     for i in range(1):
-        #################################################
+        ################################################# more than 1 if simulate buy multiple same product
         response = session.post(url, data=data)
         print("Statut:", response.status_code)
         if response.status_code == 504:
@@ -68,7 +68,11 @@ def check_order_validation(price_one_product):
         cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain = cookie.domain, path= cookie.path)
 
     soup = BeautifulSoup(response.text, "html.parser")
-    number_products_in_cart = soup.find("td", class_="product-name").find("strong", class_="product-quantity").get_text()
+    number_products_in_cart = soup.find("td", class_="product-name")
+    if number_products_in_cart == None:
+        print("CART IS EMPTY")
+        return 200
+    number_products_in_cart = number_products_in_cart.find("strong", class_="product-quantity").get_text()
     number_products_in_cart = number_products_in_cart.split()[-1]
     print("number products in cart:", number_products_in_cart)
 

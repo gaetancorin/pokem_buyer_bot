@@ -1,0 +1,2 @@
+<div class="cart-empty woocommerce-info">
+		Votre panier est actuellement vide.	</div>

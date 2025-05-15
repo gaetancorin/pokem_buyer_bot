@@ -223,10 +223,13 @@ def choose_pickup_point(driver):
             pickup_name = pickup_element.find_element(By.CSS_SELECTOR, "p.widget_colissimo_text_bold")
             if NOM_ZONE_POINT_RELAIS in pickup_name.text.strip().upper():
                 target_pickup_element = pickup_element
-                print("find pickup-point: ", pickup_name.text.strip().upper())
+                print("find selected pickup-point: ", pickup_name.text.strip().upper())
                 break
         except:
             continue
+    if target_pickup_element == None:
+        print("NOT FOUND SELECTED PICKUP-POINT, GET FIRST PICKUP-POINT BY DEFAULT")
+        target_pickup_element = pickup_elements[0]
     print("open good pickup-point element")
     button_for_open_right_element = target_pickup_element.find_element(By.CSS_SELECTOR, "img.widget_colissimo_icone_coche")
     driver.execute_script("arguments[0].click();", button_for_open_right_element)

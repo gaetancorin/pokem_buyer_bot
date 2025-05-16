@@ -51,12 +51,14 @@ def check_disponibility(compteur, time_start, write_html=False):
         gtm4wp_product_data = form.find('input', {'name': 'gtm4wp_product_data'})['value']
         product_id = soup.find('link', {'rel': 'shortlink'})['href'].split('p=')[1]
         price_to_one_product = soup.find("p", class_="price").find("span", class_="woocommerce-Price-amount amount")
-        price_to_one_product = price_to_one_product.find("bdi").find(text=True, recursive=False).strip()
+        price_to_one_product = price_to_one_product.find("bdi").find(text=True, recursive=False).strip().replace(',', '.')
         print("price to one product:", price_to_one_product)
         print("product_id = ", product_id)
         print("url_to_post = ", url_to_post)
         print("gtm4wp_product_data = ", gtm4wp_product_data)
         return response.status_code, form, url_to_post, product_id, gtm4wp_product_data, price_to_one_product
+
+
 
 if __name__ == "__main__":
     print("---- START VERIFY DISPONIBILITY ----")

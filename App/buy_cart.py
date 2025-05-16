@@ -177,7 +177,7 @@ def place_order_by_selenium():
     radio_button = driver.find_element(By.ID, METHODE_ENVOI)
     driver.execute_script("arguments[0].click();", radio_button)
     if METHODE_ENVOI == 'shipping_method_0_lpc_relay59':
-        # POINT RELAIS
+        print("shipping methode pickup-point")
         pickup_point_already_selected = False
         pickup_button = driver.find_element(By.ID, "lpc_pick_up_widget_show_map")
         if "Changer le point de retrait" in pickup_button.text:
@@ -237,5 +237,3 @@ def choose_pickup_point(driver):
     button_for_select_right_element = target_pickup_element.find_element(By.CSS_SELECTOR, "div.widget_colissimo_bouton_validation")
     driver.execute_script("arguments[0].click();", button_for_select_right_element)
     print("good pickup-point selected")
-
-

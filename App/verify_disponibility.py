@@ -4,6 +4,8 @@ import requests
 import configparser
 from bs4 import BeautifulSoup
 from pathlib import Path
+import App.utils.session_manager as session_manager
+import App.generate_connection as generate_connection
 
 config = configparser.ConfigParser()
 config.read('../config/config.ini')
@@ -18,14 +20,25 @@ def live_check_disponibility():
     product_id = None
     gtm4wp_product_data = None
     price_to_one_product = None
+    time_before_refresh_account =  datetime.datetime.now()
     while response != 200 or button is None or url_to_post is None or product_id is None or gtm4wp_product_data is None or price_to_one_product is None:
         response, button, url_to_post, product_id, gtm4wp_product_data, price_to_one_product = check_disponibility(compteur, time_start, write_html=False)
         compteur += 1
-        # time.sleep(0.1)
+        #time.sleep(0.1)
 
         if response == 200 and button is not None:
             if url_to_post is None or product_id is None or gtm4wp_product_data is None or price_to_one_product is None:
                 print("FATAL ERROR ON HTML scrapping even if status_code 200 and button OK")
+        if (datetime.datetime.now() - time_before_refresh_account) > datetime.timedelta(minutes=5):
+            time_before_refresh_account = datetime.datetime.now()
+            print("refresh waiting account")
+            session_manager.force_new_session()
+            print("---- GET PROOF_ID OF CONNECTION (refresh) ----")
+            proof_id = generate_connection.get_proof_of_connection()
+            print("---- GET COOKIES (refresh) ----")
+            generate_connection.ask_for_cookies(proof_id)
+            print("---- TEST CONNECTION (refresh) ----")
+            generate_connection.connect_by_cookies()
     return url_to_post, product_id, gtm4wp_product_data, price_to_one_product
 
 

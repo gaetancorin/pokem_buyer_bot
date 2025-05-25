@@ -1,5 +1,5 @@
 import App.utils.session_manager as session_manager
-import App.utils.cookies_manager as cookies_manager
+import App.dev_utils.cookies_manager as cookies_manager
 from bs4 import BeautifulSoup
 from pathlib import Path
 

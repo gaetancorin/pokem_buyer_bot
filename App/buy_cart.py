@@ -1,4 +1,4 @@
-import App.utils.cookies_manager as cookies_manager
+import App.dev_utils.cookies_manager as cookies_manager
 import App.utils.session_manager as session_manager
 from selenium import webdriver
 from selenium.webdriver.common.by import By

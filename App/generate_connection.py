@@ -1,13 +1,7 @@
 import App.utils.session_manager as session_manager
 import App.dev_utils.cookies_manager as cookies_manager
-import configparser
+import App.utils.config_file_manager as config_file_manager
 from bs4 import BeautifulSoup
-
-config = configparser.ConfigParser()
-config.read('../config/config.ini')
-username = config['VARIABLEENV']['USERNAME']
-password = config['VARIABLEENV']['PASSWORD']
-
 
 def get_proof_of_connection():
     url = "https://www.cardshunter.fr/mon-compte/"
@@ -24,6 +18,10 @@ def get_proof_of_connection():
 
 
 def ask_for_cookies(proof_id):
+    config_file = config_file_manager.get_config_file()
+    username = config_file['VARIABLEENV']['USERNAME']
+    password = config_file['VARIABLEENV']['PASSWORD']
+
     url = "https://www.cardshunter.fr/mon-compte/"
     data = {
         "username": username,
@@ -39,6 +37,7 @@ def ask_for_cookies(proof_id):
         print("Statut:", response.status_code)
     # print("Contenu:", response.text)
     cookies_manager.displayed_cookies_if_activated(session)
+
 
 def connect_by_cookies():
     url = "https://www.cardshunter.fr/mon-compte/"
@@ -59,6 +58,7 @@ def connect_by_cookies():
 
 
 if __name__ == "__main__":
+    config_file_manager.set_config_file_on_debug_mode(1)
     print("---- GET PROOF_ID OF CONNECTION ----")
     proof_id = get_proof_of_connection()
     print("---- GET COOKIES ----")

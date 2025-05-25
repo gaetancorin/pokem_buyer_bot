@@ -1,10 +1,11 @@
 import App.dev_utils.cookies_manager as cookies_manager
 import App.utils.session_manager as session_manager
+import App.utils.config_file_manager as config_file_manager
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import NoSuchElementException
 import time
-import configparser
 
 shipping_method ={}
 shipping_method['1'] = "shipping_method_0_lpc_sign58" # COLIS AVEC SIGNATURE
@@ -12,26 +13,24 @@ shipping_method['2'] = "shipping_method_0_lpc_nosign1" # COLIS SANS SIGNATURE
 shipping_method['3'] = "shipping_method_0_fish_n_ships35" # COLIS LETTRE SUIVI
 shipping_method['4'] = "shipping_method_0_lpc_relay59" # COLIS POINT RETRAIT
 
-config = configparser.ConfigParser()
-config.read('../config/config.ini')
-PRENOM = config['VARIABLEFORM']['PRENOM']
-NOM = config['VARIABLEFORM']['NOM']
-PAYS = config['VARIABLEFORM']['PAYS']
-ADRESSE_NUMERO_NOM_RUE = config['VARIABLEFORM']['ADRESSE_NUMERO_NOM_RUE']
-ADRESSE_BATIMENT_APPARTEMENT = config['VARIABLEFORM']['ADRESSE_BATIMENT_APPARTEMENT']
-CODE_POSTAL = config['VARIABLEFORM']['CODE_POSTAL']
-VILLE = config['VARIABLEFORM']['VILLE']
-TELEPHONE = config['VARIABLEFORM']['TELEPHONE']
-EMAIL = config['VARIABLEFORM']['EMAIL']
-NOM_PROPRIETAIRE_CARTE_BLEU = config['VARIABLEFORM']['NOM_PROPRIETAIRE_CARTE_BLEU']
-NUMERO_CARTE_BLEU = config['VARIABLEFORM']['NUMERO_CARTE_BLEU']
-DATE_EXPIRATION_CARTE_BLEU = config['VARIABLEFORM']['DATE_EXPIRATION_CARTE_BLEU'].replace("/", "").replace("_", "").replace("-", "")
-NUMERO_SECURITE_CARTE_BLEU = config['VARIABLEFORM']['NUMERO_SECURITE_CARTE_BLEU']
-METHODE_ENVOI = shipping_method[config['VARIABLEFORM']['METHODE_ENVOI']]
-ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT = config['VARIABLEFORM']['ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT']
-NOM_ZONE_POINT_RELAIS  = config['VARIABLEFORM']['NOM_ZONE_POINT_RELAIS']
-
 def place_order_by_selenium():
+    config_file = config_file_manager.get_config_file()
+    PRENOM = config_file['VARIABLEFORM']['PRENOM']
+    NOM = config_file['VARIABLEFORM']['NOM']
+    PAYS = config_file['VARIABLEFORM']['PAYS']
+    ADRESSE_NUMERO_NOM_RUE = config_file['VARIABLEFORM']['ADRESSE_NUMERO_NOM_RUE']
+    ADRESSE_BATIMENT_APPARTEMENT = config_file['VARIABLEFORM']['ADRESSE_BATIMENT_APPARTEMENT']
+    CODE_POSTAL = config_file['VARIABLEFORM']['CODE_POSTAL']
+    VILLE = config_file['VARIABLEFORM']['VILLE']
+    TELEPHONE = config_file['VARIABLEFORM']['TELEPHONE']
+    EMAIL = config_file['VARIABLEFORM']['EMAIL']
+    NOM_PROPRIETAIRE_CARTE_BLEU = config_file['VARIABLEFORM']['NOM_PROPRIETAIRE_CARTE_BLEU']
+    NUMERO_CARTE_BLEU = config_file['VARIABLEFORM']['NUMERO_CARTE_BLEU']
+    DATE_EXPIRATION_CARTE_BLEU = config_file['VARIABLEFORM']['DATE_EXPIRATION_CARTE_BLEU'].replace("/", "").replace("_","").replace("-", "")
+    NUMERO_SECURITE_CARTE_BLEU = config_file['VARIABLEFORM']['NUMERO_SECURITE_CARTE_BLEU']
+    METHODE_ENVOI = shipping_method[config_file['VARIABLEFORM']['METHODE_ENVOI']]
+    NOM_ZONE_POINT_RELAIS = config_file['VARIABLEFORM']['NOM_ZONE_POINT_RELAIS']
+
     # Initialise solanium driver cookies with good url
     driver = webdriver.Chrome()
     driver.get("https://www.cardshunter.fr/wp-content/smush-webp/2021/12/cropped-Logo_fond_blanc_e7e3f730-4a44-48a0-be6e-e087faab7c51_540x-300x163.png.webp")
@@ -181,8 +180,17 @@ def place_order_by_selenium():
     driver.execute_script("arguments[0].click();", radio_button)
     if METHODE_ENVOI == 'shipping_method_0_lpc_relay59':
         print("shipping methode pickup-point")
+
+        pickup_button = None
+        while pickup_button is None:
+            try:
+                pickup_button = driver.find_element(By.ID, "lpc_pick_up_widget_show_map")
+            except NoSuchElementException:
+                print("pickup_button not found, wait for loading...")
+                time.sleep(0.5)
+        print("found pickup-button")
+
         pickup_point_already_selected = False
-        pickup_button = driver.find_element(By.ID, "lpc_pick_up_widget_show_map")
         if "Changer le point de retrait" in pickup_button.text:
             # POINT RELAIS DEJA PRESELECTIONNE
             pickup_name_selected = driver.find_element(By.CSS_SELECTOR, "div.lpc_pickup_info_address_name")
@@ -202,6 +210,10 @@ def place_order_by_selenium():
 
 
 def choose_pickup_point(driver):
+    config_file = config_file_manager.get_config_file()
+    ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT = config_file['VARIABLEFORM']['ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT']
+    NOM_ZONE_POINT_RELAIS = config_file['VARIABLEFORM']['NOM_ZONE_POINT_RELAIS']
+
     print("click on select pickup-point button")
     element = driver.find_element(By.ID, "lpc_pick_up_widget_show_map")
     driver.execute_script("arguments[0].click();", element)
@@ -211,7 +223,7 @@ def choose_pickup_point(driver):
     adress_input.send_keys(ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT)
     print("select first address available on dynamic list")
     table = driver.find_element(By.ID, "widget_colissimo_autocomplete")
-    time.sleep(3)
+    time.sleep(5)
     choose_first_adress = table.find_element(By.CSS_SELECTOR, "td.widget_colissimo_autocomplete_li")
     driver.execute_script("arguments[0].click();", choose_first_adress)
     print("click on loup element")

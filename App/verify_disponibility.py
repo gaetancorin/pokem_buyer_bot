@@ -1,14 +1,10 @@
 import datetime
 import requests
-import configparser
+import App.utils.config_file_manager as config_file_manager
 from bs4 import BeautifulSoup
 import App.utils.session_manager as session_manager
 import App.generate_connection as generate_connection
 import App.dev_utils.file_saver as file_saver
-
-config = configparser.ConfigParser()
-config.read('../config/config.ini')
-url_product_card = config['VARIABLEENV']['URLPRODUCTCARD']
 
 def live_check_disponibility():
     compteur = 0
@@ -46,6 +42,9 @@ def live_check_disponibility():
 
 
 def check_disponibility(compteur, time_start):
+    config_file = config_file_manager.get_config_file()
+    url_product_card = config_file['VARIABLEENV']['URLPRODUCTCARD']
+
     time_now = datetime.datetime.now()
     time_start_compteur = time_now - time_start
     response = requests.get(url_product_card)
@@ -78,6 +77,7 @@ def check_disponibility(compteur, time_start):
 
 
 if __name__ == "__main__":
+    config_file_manager.set_config_file_on_debug_mode(1)
     print("---- START VERIFY DISPONIBILITY ----")
     live_check_disponibility()
     print("---- END -----")

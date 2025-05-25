@@ -2,7 +2,7 @@ from App.utils import session_manager as session_manager
 import App.dev_utils.cookies_manager as cookies_manager
 from bs4 import BeautifulSoup
 
-def final_check_order_validation(status_code_when_add, html_when_add, price_one_product):
+def verify_order_before_checkout(status_code_when_add, html_when_add, price_one_product):
     if status_code_when_add == 200:
         print("status_code_when_add is 200, look response for check order")
 

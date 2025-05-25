@@ -1,10 +1,5 @@
 from App.utils import session_manager as session_manager
 import App.dev_utils.cookies_manager as cookies_manager
-import configparser
-
-config = configparser.ConfigParser()
-config.read('../config/config.ini')
-url_product_card = config['VARIABLEENV']['URLPRODUCTCARD']
 
 def add_product_in_cart(url_to_post, product_id, gtm4wp_product_data):
     url = url_to_post

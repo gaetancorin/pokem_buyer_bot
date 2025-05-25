@@ -1,19 +1,14 @@
+import App.utils.session_manager as session_manager
 import App.generate_connection as generate_connection
 import App.cart_cleaner as cart_cleaner
 import App.verify_disponibility as verify_disponibility
 import App.cart_adder as cart_adder
-import App.cart_final_check as cart_final_check
-import App.buy_cart as buy_cart
-import configparser
+import App.cart_verifier as cart_verifier
+import App.cart_checkout as cart_checkout
 
-config = configparser.ConfigParser()
-config.read('../config/config.ini')
-username = config['VARIABLEENV']['USERNAME']
-password = config['VARIABLEENV']['PASSWORD']
 
-url_product_card = config['VARIABLEENV']['URLPRODUCTCARD']
-
-if __name__ == "__main__":
+def launch_bot():
+    session_manager.force_new_session()
     print("---- GET PROOF_ID OF CONNECTION ----")
     proof_id = generate_connection.get_proof_of_connection()
     print("---- GET COOKIES ----")
@@ -31,8 +26,8 @@ if __name__ == "__main__":
         print("---- ADD PRODUCT IN CART (connect)----")
         status_code_when_add, html_when_add = cart_adder.add_product_in_cart(url_to_post, product_id, gtm4wp_product_data)
         print("---- FINAL CHECK ORDER VALIDATION (connect)----")
-        product_in_cart = cart_final_check.final_check_order_validation(status_code_when_add, html_when_add, price_one_product)
+        product_in_cart = cart_verifier.verify_order_before_checkout(status_code_when_add, html_when_add, price_one_product)
 
     print("---- BUY CART (connect)----")
-    buy_cart.place_order_by_selenium()
+    cart_checkout.place_order_by_selenium()
     print("---- END -----")

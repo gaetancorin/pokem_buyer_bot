@@ -1,6 +1,10 @@
 # Application
 outpout/
-config/config.ini
+config/config1.ini
+config/config2.ini
+config/config3.ini
+config/config4.ini
+config/config5.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

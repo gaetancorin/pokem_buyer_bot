@@ -25,8 +25,10 @@ def final_check_order_validation(status_code_when_add, html_when_add, price_one_
 
         url = "https://www.cardshunter.fr/commander/"
         session = session_manager.get_session()
-        response = session.get(url)
-        print("Statut:", response.status_code)
+        response = None
+        while not response or response.status_code != 200:
+            response = session.get(url)
+            print("Statut:", response.status_code)
         # print(response.text)
         print("Cookies reçus :")
         for cookie in session.cookies:

@@ -6,8 +6,10 @@ from pathlib import Path
 def clean_cart_if_product():
     url = "https://www.cardshunter.fr/panier/"
     session = session_manager.get_session()
-    response = session.get(url)
-    print("Statut:", response.status_code)
+    response = None
+    while not response or response.status_code != 200:
+        response = session.get(url)
+        print("Statut:", response.status_code)
     # print("Contenu:", response.text)
     print("Cookies reçus :")
     for cookie in session.cookies:
@@ -29,8 +31,10 @@ def clean_cart_if_product():
 
 def clean_cart(link_to_clean_cart):
     session = session_manager.get_session()
-    response = session.get(link_to_clean_cart)
-    print("Statut:", response.status_code)
+    response = None
+    while not response or response.status_code != 200:
+        response = session.get(link_to_clean_cart)
+        print("Statut:", response.status_code)
     print("Cookies reçus :")
     for cookie in session.cookies:
         print("session | ", cookie.name, "=", cookie.value)

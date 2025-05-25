@@ -15,9 +15,8 @@ def add_product_in_cart(url_to_post, product_id, gtm4wp_product_data):
         "gtm4wp_product_data": gtm4wp_product_data
     }
     session = session_manager.get_session()
-    #######################################################
-    for i in range(1):
-        ################################################# more than 1 if simulate buy multiple same product
+
+    for i in range(1): ############## more than 1 if simulate buy multiple same product
         response = session.post(url, data=data)
         print("Statut:", response.status_code)
         if response.status_code == 504:

@@ -13,8 +13,10 @@ password = config['VARIABLEENV']['PASSWORD']
 def get_proof_of_connection():
     url = "https://www.cardshunter.fr/mon-compte/"
     session = session_manager.get_session()
-    response = session.get(url)
-    print("Statut:", response.status_code)
+    response = None
+    while not response or response.status_code != 200:
+        response = session.get(url)
+        print("Statut:", response.status_code)
     soup = BeautifulSoup(response.text, 'html.parser')
     proof_id = soup.find('input', {'id': 'woocommerce-login-nonce'})['value']
     print("proof id = ", proof_id)
@@ -32,10 +34,10 @@ def ask_for_cookies(proof_id):
         "login": "Se connecter"
     }
     session = session_manager.get_session()
-    response = session.post(url, data=data)
-
-    # Afficher le contenu de la réponse
-    print("Statut:", response.status_code)
+    response = None
+    while not response or response.status_code != 200:
+        response = session.post(url, data=data)
+        print("Statut:", response.status_code)
     # print("Contenu:", response.text)
     print("Cookies reçus :")
     for cookie in session.cookies:
@@ -45,8 +47,10 @@ def ask_for_cookies(proof_id):
 def connect_by_cookies():
     url = "https://www.cardshunter.fr/mon-compte/"
     session = session_manager.get_session()
-    response = session.get(url)
-    print("Statut:", response.status_code)
+    response = None
+    while not response or response.status_code != 200:
+        response = session.get(url)
+        print("Statut:", response.status_code)
     # print("Contenu:", response.text)
     print("Cookies reçus :")
     for cookie in session.cookies:

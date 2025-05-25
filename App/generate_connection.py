@@ -39,10 +39,7 @@ def ask_for_cookies(proof_id):
         response = session.post(url, data=data)
         print("Statut:", response.status_code)
     # print("Contenu:", response.text)
-    print("Cookies reçus :")
-    for cookie in session.cookies:
-        print("session | ", cookie.name, "=", cookie.value)
-        cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain = cookie.domain, path= cookie.path)
+    cookies_manager.displayed_cookies_if_activated(session)
 
 def connect_by_cookies():
     url = "https://www.cardshunter.fr/mon-compte/"
@@ -52,10 +49,7 @@ def connect_by_cookies():
         response = session.get(url)
         print("Statut:", response.status_code)
     # print("Contenu:", response.text)
-    print("Cookies reçus :")
-    for cookie in session.cookies:
-        print("session | ", cookie.name, "=", cookie.value)
-        cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain = cookie.domain, path= cookie.path)
+    cookies_manager.displayed_cookies_if_activated(session)
     soup = BeautifulSoup(response.text, 'html.parser')
     if "Bonjour" in soup.get_text() and "Déconnexion" in soup.get_text():
         print("Connection Success")

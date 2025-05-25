@@ -22,9 +22,5 @@ def add_product_in_cart(url_to_post, product_id, gtm4wp_product_data):
         if response.status_code == 504:
             return None
         # print("Contenu:", response.text)
-        print("Cookies reçus :")
-        for cookie in session.cookies:
-            print("session | ", cookie.name, "=", cookie.value)
-            cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain = cookie.domain, path= cookie.path)
-
+        cookies_manager.displayed_cookies_if_activated(session)
     return response.status_code, response.text

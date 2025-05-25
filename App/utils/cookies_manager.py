@@ -1,10 +1,11 @@
+# this util help to debug by displaying cookies for each steps on terminal
+cookies_displayed = False
 
-cookies_storage = {}
-
-def add_cookies(key, value, domain, path):
-    global cookies_storage
-    cookies_storage[key] = {"value": value, "domain": domain, "path": path}
-
-def get_cookies():
-    global cookies_storage
-    return cookies_storage
+def displayed_cookies_if_activated(session):
+    if cookies_displayed != True:
+        return
+    else:
+        print("Cookies reçus :")
+        for cookie in session.cookies:
+            print("session | ", cookie.name, "=", cookie.value)
+            # print("session | ", cookie.name, "=", cookie.value, "domain": cookie.domain, "path": cookie.path}")

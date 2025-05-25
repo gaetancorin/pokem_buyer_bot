@@ -30,10 +30,7 @@ def final_check_order_validation(status_code_when_add, html_when_add, price_one_
             response = session.get(url)
             print("Statut:", response.status_code)
         # print(response.text)
-        print("Cookies reçus :")
-        for cookie in session.cookies:
-            print("session | ", cookie.name, "=", cookie.value)
-            cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain=cookie.domain, path=cookie.path)
+        cookies_manager.displayed_cookies_if_activated(session)
 
         soup = BeautifulSoup(response.text, "html.parser")
         number_products_in_cart = soup.find("td", class_="product-name")

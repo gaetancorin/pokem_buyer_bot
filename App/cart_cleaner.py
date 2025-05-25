@@ -11,10 +11,7 @@ def clean_cart_if_product():
         response = session.get(url)
         print("Statut:", response.status_code)
     # print("Contenu:", response.text)
-    print("Cookies reçus :")
-    for cookie in session.cookies:
-        print("session | ", cookie.name, "=", cookie.value)
-        cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain=cookie.domain, path=cookie.path)
+    cookies_manager.displayed_cookies_if_activated(session)
     Path("../outpout/").mkdir(parents=True, exist_ok=True)
     with open("../outpout/cart_content.html", "w", encoding="utf-8") as f:
         f.write(response.text)
@@ -24,7 +21,7 @@ def clean_cart_if_product():
     if cart_empty:
         print("No product in Cart")
     else:
-        print("Product in Cart")
+        print("Found product in Cart")
         link_to_delete_product = soup.find("td", class_="product-remove").find("a")["href"]
         print("link_to_delete_product", link_to_delete_product)
         clean_cart(link_to_delete_product)
@@ -35,10 +32,7 @@ def clean_cart(link_to_clean_cart):
     while not response or response.status_code != 200:
         response = session.get(link_to_clean_cart)
         print("Statut:", response.status_code)
-    print("Cookies reçus :")
-    for cookie in session.cookies:
-        print("session | ", cookie.name, "=", cookie.value)
-        cookies_manager.add_cookies(key=cookie.name, value=cookie.value, domain=cookie.domain, path=cookie.path)
+    cookies_manager.displayed_cookies_if_activated(session)
     soup = BeautifulSoup(response.text, "html.parser")
     cart_empty = soup.find("div", class_="cart-empty")
     if cart_empty:

@@ -1,4 +1,5 @@
 import App.utils.cookies_manager as cookies_manager
+import App.utils.session_manager as session_manager
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
@@ -35,13 +36,15 @@ def place_order_by_selenium():
     driver = webdriver.Chrome()
     driver.get("https://www.cardshunter.fr/wp-content/smush-webp/2021/12/cropped-Logo_fond_blanc_e7e3f730-4a44-48a0-be6e-e087faab7c51_540x-300x163.png.webp")
 
-    # Fill cookies from session_manager to solanium
-    for key, value in cookies_manager.get_cookies().items():
-        selenium_cookie =  {
-            'name': key,
-            'value': value["value"],
-            'domain': value["domain"],
-            'path': value["path"],
+    # Fill cookies from session.cookies to solanium
+    session = session_manager.get_session()
+    cookies_manager.displayed_cookies_if_activated(session)
+    for cookie in session.cookies:
+        selenium_cookie = {
+            'name': cookie.name,
+            'value': cookie.value,
+            'domain': cookie.domain,
+            'path': cookie.path,
         }
         driver.add_cookie(selenium_cookie)
 

@@ -1,11 +1,10 @@
-import time
 import datetime
 import requests
 import configparser
 from bs4 import BeautifulSoup
-from pathlib import Path
 import App.utils.session_manager as session_manager
 import App.generate_connection as generate_connection
+import App.dev_utils.file_saver as file_saver
 
 config = configparser.ConfigParser()
 config.read('../config/config.ini')
@@ -36,7 +35,7 @@ def live_check_disponibility():
             generate_connection.connect_by_cookies()
 
         # check product disponibility
-        response, button, url_to_post, product_id, gtm4wp_product_data, price_to_one_product = check_disponibility(compteur, time_start, write_html=False)
+        response, button, url_to_post, product_id, gtm4wp_product_data, price_to_one_product = check_disponibility(compteur, time_start)
         compteur += 1
         #time.sleep(0.1)
 
@@ -46,7 +45,7 @@ def live_check_disponibility():
     return url_to_post, product_id, gtm4wp_product_data, price_to_one_product
 
 
-def check_disponibility(compteur, time_start, write_html=False):
+def check_disponibility(compteur, time_start):
     time_now = datetime.datetime.now()
     time_start_compteur = time_now - time_start
     response = requests.get(url_product_card)
@@ -60,11 +59,8 @@ def check_disponibility(compteur, time_start, write_html=False):
     if not form:
         print("BUTTON NOT FOUND, STATUS CODE: ", response.status_code, " // ", time_now.strftime("%Hh%Mm%Ss"),
               "compteur:", compteur, "time_start:", time_start_compteur)
-        # écrire le code html recu si bouton pas trouvé
-        if write_html == True:
-            Path("../outpout/").mkdir(parents=True, exist_ok=True)
-            with open("../outpout/outpout_fail.html", "w", encoding="utf-8") as f:
-                f.write(response.text)
+        # en mode debug, écrire le code html recu si bouton pas trouvé
+        # file_saver.save_html_file_for_futur_analysis(file_name="check_disponibility_not_button", response=response)
         return response.status_code, form, None, None, None, None
     else:
         print("button ok, status code:", response.status_code, " // ", time_now.strftime("%Hh%Mm%Ss"), "compteur:", compteur, "time_start:", time_start_compteur)

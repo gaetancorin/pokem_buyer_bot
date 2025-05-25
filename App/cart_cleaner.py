@@ -1,7 +1,7 @@
 import App.utils.session_manager as session_manager
 import App.dev_utils.cookies_manager as cookies_manager
+import App.dev_utils.file_saver as file_saver
 from bs4 import BeautifulSoup
-from pathlib import Path
 
 def clean_cart_if_product():
     url = "https://www.cardshunter.fr/panier/"
@@ -12,9 +12,7 @@ def clean_cart_if_product():
         print("Statut:", response.status_code)
     # print("Contenu:", response.text)
     cookies_manager.displayed_cookies_if_activated(session)
-    Path("../outpout/").mkdir(parents=True, exist_ok=True)
-    with open("../outpout/cart_content.html", "w", encoding="utf-8") as f:
-        f.write(response.text)
+    file_saver.save_html_file_for_futur_analysis(file_name="cart_content", response=response)
 
     soup = BeautifulSoup(response.text, "html.parser")
     cart_empty = soup.find("div", class_="cart-empty")

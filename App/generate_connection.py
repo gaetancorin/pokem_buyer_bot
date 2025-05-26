@@ -51,8 +51,10 @@ def connect_by_cookies():
     soup = BeautifulSoup(response.text, 'html.parser')
     if "Bonjour" in soup.get_text() and "Déconnexion" in soup.get_text():
         print("Connection Success")
+        return "Done"
     else:
         print("Connection Failed")
+        return None
 
 
 

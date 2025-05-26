@@ -2,10 +2,15 @@ import App.dev_utils.cookies_manager as cookies_manager
 import App.utils.session_manager as session_manager
 import App.utils.config_file_manager as config_file_manager
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 import time
+
+chrome_options = Options()
+chrome_options.add_argument("--log-level=3")  # ou "--silent"
+chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 shipping_method ={}
 shipping_method['1'] = "shipping_method_0_lpc_sign58" # COLIS AVEC SIGNATURE
@@ -13,7 +18,7 @@ shipping_method['2'] = "shipping_method_0_lpc_nosign1" # COLIS SANS SIGNATURE
 shipping_method['3'] = "shipping_method_0_fish_n_ships35" # COLIS LETTRE SUIVI
 shipping_method['4'] = "shipping_method_0_lpc_relay59" # COLIS POINT RETRAIT
 
-def place_order_by_selenium():
+def place_order_by_selenium(action):
     config_file = config_file_manager.get_config_file()
     PRENOM = config_file['VARIABLEFORM']['PRENOM']
     NOM = config_file['VARIABLEFORM']['NOM']
@@ -30,9 +35,11 @@ def place_order_by_selenium():
     NUMERO_SECURITE_CARTE_BLEU = config_file['VARIABLEFORM']['NUMERO_SECURITE_CARTE_BLEU']
     METHODE_ENVOI = shipping_method[config_file['VARIABLEFORM']['METHODE_ENVOI']]
     NOM_ZONE_POINT_RELAIS = config_file['VARIABLEFORM']['NOM_ZONE_POINT_RELAIS']
+    if action == "choose_pickup_point":
+        METHODE_ENVOI = shipping_method['4']
 
-    # Initialise solanium driver cookies with good url
-    driver = webdriver.Chrome()
+    # Initialise solanium driver with good url for cookies
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.cardshunter.fr/wp-content/smush-webp/2021/12/cropped-Logo_fond_blanc_e7e3f730-4a44-48a0-be6e-e087faab7c51_540x-300x163.png.webp")
 
     # Fill cookies from session.cookies to solanium
@@ -197,19 +204,28 @@ def place_order_by_selenium():
             if NOM_ZONE_POINT_RELAIS in pickup_name_selected.text or pickup_name_selected.text in NOM_ZONE_POINT_RELAIS:
                 print("Good pickup-point already selected")
                 pickup_point_already_selected = True
-        if not pickup_point_already_selected:
-            # PAS DE POINT RELAIS PRESELECTIONNE OU QUI N EST PAS LE BON
+        if not pickup_point_already_selected or action == "choose_pickup_point":
+            # PAS DE POINT RELAIS PRESELECTIONNE
+            # OU POINT RELAIS PRESELECTIONNE  QUI N EST PAS LE BON
+            # OU USER VEUT ACCEDER A POINT RELAIS
             print("Select pickup-point")
-            choose_pickup_point(driver)
+            choose_pickup_point(driver, action)
 
-    print("start Command Validation ")
-    button_validation = driver.find_element(By.ID, "place_order")
-    #driver.execute_script("arguments[0].click();", button_validation)
+    if action == "buy":
+        print("start Command Validation ")
+        button_validation = driver.find_element(By.ID, "place_order")
+        #driver.execute_script("arguments[0].click();", button_validation)
+        print("You succeeded in buying the product!")
+    if action == "test":
+        print("")
+        print("--- --- ---")
+        print("You can now verify all parameters. If there is a mistake, change parameters on your selected config file.")
+        input("Click ENTER to continue(no product will be buy)")
 
     print("Command done")
 
 
-def choose_pickup_point(driver):
+def choose_pickup_point(driver, action):
     config_file = config_file_manager.get_config_file()
     ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT = config_file['VARIABLEFORM']['ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT']
     NOM_ZONE_POINT_RELAIS = config_file['VARIABLEFORM']['NOM_ZONE_POINT_RELAIS']
@@ -231,6 +247,13 @@ def choose_pickup_point(driver):
     driver.execute_script("arguments[0].click();", loup_element)
     print("research on list pickup-point element by name")
     time.sleep(3)
+    if action == "choose_pickup_point":
+        print("")
+        print("--- --- --- ---")
+        print("You now have access to the pickup points.")
+        print("Please copy and paste the name of the selected pickup point into your config file under the variable NOM_ZONE_POINT_RELAIS.")
+        input("Press ENTER to continue")
+        return
     pickup_elements = driver.find_elements(By.CSS_SELECTOR, "div.widget_colissimo_PDR")
     target_pickup_element = None
     for pickup_element in pickup_elements:

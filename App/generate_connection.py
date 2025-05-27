@@ -4,7 +4,7 @@ import App.utils.config_file_manager as config_file_manager
 from bs4 import BeautifulSoup
 
 def get_proof_of_connection():
-    url = "https://www.cardshunter.fr/mon-compte/"
+    url = "https://www.cards(do_not_mention)hunter.fr/mon-compte/".replace("(do_not_mention)", "")
     session = session_manager.get_session()
     response = None
     while not response or response.status_code != 200:
@@ -22,7 +22,7 @@ def ask_for_cookies(proof_id):
     username = config_file['VARIABLEENV']['USERNAME']
     password = config_file['VARIABLEENV']['PASSWORD']
 
-    url = "https://www.cardshunter.fr/mon-compte/"
+    url = "https://www.cards(do_not_mention)hunter.fr/mon-compte/".replace("(do_not_mention)", "")
     data = {
         "username": username,
         "password": password,
@@ -40,7 +40,7 @@ def ask_for_cookies(proof_id):
 
 
 def connect_by_cookies():
-    url = "https://www.cardshunter.fr/mon-compte/"
+    url = "https://www.cards(do_not_mention)hunter.fr/mon-compte/".replace("(do_not_mention)", "")
     session = session_manager.get_session()
     response = None
     while not response or response.status_code != 200:

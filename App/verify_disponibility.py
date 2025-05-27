@@ -43,7 +43,7 @@ def live_check_disponibility():
 
 def check_disponibility(compteur, time_start):
     config_file = config_file_manager.get_config_file()
-    url_product_card = config_file['VARIABLEENV']['URLPRODUCTCARD']
+    url_product_card = config_file['VARIABLEENV']['URLPRODUCTCARD'].replace("(do_not_mention)", "")
 
     time_now = datetime.datetime.now()
     time_start_compteur = time_now - time_start

@@ -23,7 +23,7 @@ def verify_order_before_checkout(status_code_when_add, html_when_add, price_one_
     else:
         print("status_code_when_add is NOT 200, need to get cart for check order")
 
-        url = "https://www.cardshunter.fr/commander/"
+        url = "https://www.cards(do_not_mention)hunter.fr/commander/".replace("(do_not_mention)", "")
         session = session_manager.get_session()
         response = None
         while not response or response.status_code != 200:

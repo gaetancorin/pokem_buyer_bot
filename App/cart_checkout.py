@@ -40,7 +40,7 @@ def place_order_by_selenium(action):
 
     # Initialise solanium driver with good url for cookies
     driver = webdriver.Chrome(options=chrome_options)
-    driver.get("https://www.cardshunter.fr/wp-content/smush-webp/2021/12/cropped-Logo_fond_blanc_e7e3f730-4a44-48a0-be6e-e087faab7c51_540x-300x163.png.webp")
+    driver.get("https://www.cards(do_not_mention)hunter.fr/wp-content/smush-webp/2021/12/cropped-Logo_fond_blanc_e7e3f730-4a44-48a0-be6e-e087faab7c51_540x-300x163.png.webp".replace("(do_not_mention)", ""))
 
     # Fill cookies from session.cookies to solanium
     session = session_manager.get_session()
@@ -55,7 +55,7 @@ def place_order_by_selenium(action):
         driver.add_cookie(selenium_cookie)
 
     # Get purchase page, fill inputs and shop !
-    driver.get("https://www.cardshunter.fr/commander/")
+    driver.get("https://www.cards(do_not_mention)hunter.fr/commander/".replace("(do_not_mention)", ""))
 
     print("start fill billing_first_name (PRENOM)")
     billing_first_name = driver.find_element(By.ID, "billing_first_name")

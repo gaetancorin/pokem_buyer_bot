@@ -4,7 +4,7 @@ import App.dev_utils.file_saver as file_saver
 from bs4 import BeautifulSoup
 
 def clean_cart_if_product():
-    url = "https://www.cardshunter.fr/panier/"
+    url = "https://www.cards(do_not_mention)hunter.fr/panier/".replace("(do_not_mention)", "")
     session = session_manager.get_session()
     response = None
     while not response or response.status_code != 200:

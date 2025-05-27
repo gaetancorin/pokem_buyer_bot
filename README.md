@@ -18,4 +18,8 @@ Here’s what it does during a standard purchase:
 
 # Comment l'utiliser ?
 ### Configuration principale
-Copier Coller le fichier config/config1_example.ini en le renommant config/config1.ini
+- Copier Coller le fichier config/config1_example.ini en le renommant config/config1.ini
+
+![](static/copie_colle_config_file.png)
+
+- Remplir l'ensemble des champs de config1.ini en utilisant vos informations personnelles.

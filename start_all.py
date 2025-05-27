@@ -6,7 +6,7 @@ import sys
 if __name__ == "__main__":
     print(sys.argv)
     if len(sys.argv) != 2:
-        input("Erreur, fichier .bat corrompu, le parametre action doit etre buy, test, ou choose_pickup_point.")
+        input("Error, corrupted .bat file, the action parameter must be 'buy', 'test', or 'choose_pickup_point'.")
         exit(1)
     action = sys.argv[1]
     if action == "buy":

@@ -2,7 +2,7 @@
 REM Vérifie si python est installé
 python --version >nul 2>&1
 IF ERRORLEVEL 1 (
-    echo Python n'est pas installé ou n'est pas dans le PATH.
+    echo Python is not installed or not in the PATH.
     pause
     exit /b 1
 )
@@ -23,10 +23,10 @@ REM Définir l'action
 set action=test
 
 REM Lance le programme principal
-echo Commande executee : python start_all.py %action%
+echo Command executed: python start_all.py %action%
 python start_all.py  %action%
 IF %ERRORLEVEL% NEQ 0 (
-    echo Une erreur s'est produite pendant l'exécution.
+    echo An error occurred during execution.
 )
 
 REM Désactive l'environnement virtuel à la fin

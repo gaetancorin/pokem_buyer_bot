@@ -30,7 +30,7 @@ for %%f in (config\*.ini) do (
 REM === Demande à l'utilisateur d'en choisir un ===
 echo.
 echo --- --- --- ---
-set /p config_number="Enter the number of a config.ini file to use (ex: 2 for config2.ini). The example file is not allowed:"
+set /p config_number="Enter the number of a config.ini file to use (ex: 2 for config2.ini, the example file is not allowed) : "
 
 REM Construit le nom du fichier à partir du numéro
 set "config_file=config%config_number%.ini"

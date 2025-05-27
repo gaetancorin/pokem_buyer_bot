@@ -246,7 +246,7 @@ def choose_pickup_point(driver, action):
     loup_element = driver.find_element(By.CLASS_NAME, "widget_colissimo_loupe_img")
     driver.execute_script("arguments[0].click();", loup_element)
     print("research on list pickup-point element by name")
-    time.sleep(3)
+    time.sleep(5)
     if action == "choose_pickup_point":
         print("")
         print("--- --- --- ---")

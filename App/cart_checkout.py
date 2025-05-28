@@ -30,7 +30,7 @@ def place_order_by_selenium(action):
     TELEPHONE = config_file['VARIABLEFORM']['TELEPHONE']
     EMAIL = config_file['VARIABLEFORM']['EMAIL']
     NOM_PROPRIETAIRE_CARTE_BLEU = config_file['VARIABLEFORM']['NOM_PROPRIETAIRE_CARTE_BLEU']
-    NUMERO_CARTE_BLEU = config_file['VARIABLEFORM']['NUMERO_CARTE_BLEU']
+    NUMERO_CARTE_BLEU = config_file['VARIABLEFORM']['NUMERO_CARTE_BLEU'].replace(" ", "")
     DATE_EXPIRATION_CARTE_BLEU = config_file['VARIABLEFORM']['DATE_EXPIRATION_CARTE_BLEU'].replace("/", "").replace("_","").replace("-", "")
     NUMERO_SECURITE_CARTE_BLEU = config_file['VARIABLEFORM']['NUMERO_SECURITE_CARTE_BLEU']
     METHODE_ENVOI = shipping_method[config_file['VARIABLEFORM']['METHODE_ENVOI']]

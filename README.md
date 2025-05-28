@@ -1,7 +1,7 @@
 # Pokem_Buyer_Bot
 ![](static/project_name.png)
 # Introduction
-This project is a Pokem buying bot designed to purchase Pokem products faster than other buyers.
+This project is a Pokem buying bot designed to purchase Pokem products licence faster than other buyers.
 
 Here’s what it does during a standard purchase:
 - Logs in with the selected account on the merchant Pokem website
@@ -16,19 +16,28 @@ Here’s what it does during a standard purchase:
 
 
 
-# Comment l'utiliser ?
-### Configuration principale
+# Créer un fichier de config
+Le fichier de config est l'espace de stockage qui défini l'ensemble de vos informations personnelles. C'est le seul fichier que vous devait mettre a jour avant de lancer le programme.
+Vous trouverez un exemple de fichier de config dans le dossier **pokem_buyer_bot/config**
+### Nommage du fichier
 - Copier Coller le fichier config/config1_example.ini en le renommant config/config1.ini
 
 ![](static/copie_colle_config_file.png)
 
-- Créer votre compte personnel sur le site:
+### Se créer un compte personnel
+- Vous devez aller sur le site:
 ![](static/name_website_to_bot.png)
+afin de vous créer un compte personnel. Enregistrez bien votre identifiant et mot de passe que vous avez créer.
+
+### Remplir le fichier de config
 
 - Remplir l'ensemble des champs de config1.ini en utilisant vos identifiants de compte personnel et vos informations personnelles.
 - Si vous voulez effectuer plusieurs achats avec plusieurs comptes, il suffira de créer des fichiers config2.ini, config3.ini, etc...
 
-### lancer le programme
+### Configuration annexe
+Si vous désirer
+
+### Lancer le programme
 
 Toutes les actions ont été automatisés sur des fichiers .bat afin que vous n'ayez plus que a double cliquer sur les fichiers .bat pour lancer le bot. (ne fonctionne que sur Windows).
 

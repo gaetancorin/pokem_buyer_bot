@@ -214,7 +214,7 @@ def place_order_by_selenium(action):
     if action == "buy":
         print("start Command Validation ")
         button_validation = driver.find_element(By.ID, "place_order")
-        #driver.execute_script("arguments[0].click();", button_validation)
+        driver.execute_script("arguments[0].click();", button_validation)
         print("You succeeded in buying the product!")
     if action == "test":
         print("")

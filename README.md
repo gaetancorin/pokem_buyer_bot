@@ -14,41 +14,56 @@ Here’s what it does during a standard purchase:
 
 (Note: To ensure that only my friends and I use this bot, the word "poke e mon" is referred to as "pokem" throughout the repository to avoid being indexed on GitHub. The project remains public so my friends can access it.)
 
+# Create a Config File
+The config file is the storage space that contains all your personal information. It is the only file you need to update before running the program.  
+You’ll find an example config file in the **pokem_buyer_bot/config** folder.
 
-
-# Créer un fichier de config
-Le fichier de config est l'espace de stockage qui défini l'ensemble de vos informations personnelles. C'est le seul fichier que vous devait mettre a jour avant de lancer le programme.
-Vous trouverez un exemple de fichier de config dans le dossier **pokem_buyer_bot/config**
-### Nommage du fichier
-- Copier Coller le fichier config/config1_example.ini en le renommant config/config1.ini
+### File Naming
+- Copy and paste the file `config/config1_example.ini` and rename it to `config/config1.ini`.
 
 ![](static/copie_colle_config_file.png)
 
-### Se créer un compte personnel
-- Vous devez aller sur le site:
-![](static/name_website_to_bot.png)
-afin de vous créer un compte personnel. Enregistrez bien votre identifiant et mot de passe que vous avez créer.
+### Create a Personal Account
+- You need to go to the Pokem store:  
+![](static/name_website_to_bot.png)  
+to create a personal account. Make sure to save the username and password you created.
 
-### Remplir le fichier de config
+### Fill in the Config File
+We recommend using the `config1_example.ini` file as a reference to help you correctly fill out the fields in your personal `config1.ini` file.
 
-- Remplir l'ensemble des champs de config1.ini en utilisant vos identifiants de compte personnel et vos informations personnelles.
-- Si vous voulez effectuer plusieurs achats avec plusieurs comptes, il suffira de créer des fichiers config2.ini, config3.ini, etc...
+Some fields are more complex and require additional explanation to be filled out properly:
 
-### Configuration annexe
-Si vous désirer
+- URLPRODUCTCARD: Highly anticipated products often have product pages available on the site long before they go on sale. You need to browse the Pokem store to find the page of the desired product. Then, paste the URL of the product page you wish to purchase here.
 
-### Lancer le programme
+- ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT: (only if you want to use a pickup point for delivery) Enter a postal address located near the pickup points you want to use.
 
-Toutes les actions ont été automatisés sur des fichiers .bat afin que vous n'ayez plus que a double cliquer sur les fichiers .bat pour lancer le bot. (ne fonctionne que sur Windows).
+- NOM_ZONE_POINT_RELAIS: This field is the name of your preferred pickup point. To find out the name of available pickup points at your chosen address, run the script file **choose_pickup_point_one_config.bat** (see more details in the chapter _Launching the Program Using Script Files_). Then, enter the desired pickup point name in this field.
 
-Voici les différentes actions disponibles avec les différents fichiers .bat disponibles:
-- **test_one_config.bat**
-(Tester le programme jusqu'au bouton d'achat pour un fichier de config.ini que vous choisissez (sans acheter))
-- **test_all_config.bat**
-(Tester le programme jusqu'au bouton d'achat pour chacun des fichiers de config.ini (sans acheter))
-- **choose_pickup_point_one_config.bat**
-  (Tester le programme pour un fichier de config.ini que vous choisissez jusqu'au moment de choisir le point relais.))
-- **run_one_config.bat**
-(Lancer le programme pour un fichier de config.ini que vous choisissez (En achetant le produit uniquement sur le fichier de config.ini choisi))
-- **run_all_config.bat**
-(Lancer le programme pour chacun des fichiers de config.ini (En achetant le produit pour chacun des fichiers de config.ini))
+### Create Multiple Config Files
+It is possible to create multiple config files.  
+These files should be named `config1.ini`, `config2.ini`, `config3.ini`, etc.
+
+Having multiple config files allows you to **purchase several similar products using different accounts**, despite the store’s limitation of one product per account.
+
+## Launching the Program Using Script Files
+
+To make things easier, all the bot’s actions have been automated with `.bat` script files. This means you just need to double-click these `.bat` files to run the bot — no manual commands needed. (Note: these scripts only work on Windows.)
+
+Here’s a quick overview of what each script does:
+
+- **choose_pickup_point_one_config.bat**  
+  Runs the bot using a selected config file, stopping right before the pickup point selection. This helps you find and set the correct pickup point name (`NOM_ZONE_POINT_RELAIS`) in your config.
+
+- **test_one_config.bat**  
+  Runs the bot with a single config file and stops at the purchase button. Useful for testing your setup. (The program **never** completes the purchase).
+
+- **test_all_config.bat**  
+  Runs the bot for all your config files, stopping at the purchase button for each—again. Useful for testing your setups. (The program **never** completes the purchases).
+
+- **run_one_config.bat**  
+  Runs the bot with a single config file and attempts to purchase the product according to that config.
+
+- **run_all_config.bat**  
+  Runs the bot for all your config files, trying to purchase the product with each one.
+
+This setup lets you easily test and run the bot with different accounts and settings by simply choosing the right script.

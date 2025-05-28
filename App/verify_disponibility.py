@@ -56,8 +56,7 @@ def check_disponibility(compteur, time_start):
     soup = BeautifulSoup(response.text, "html.parser")
     form = soup.find('form', {'action': url_product_card})
     if not form:
-        print("BUTTON NOT FOUND, STATUS CODE: ", response.status_code, " // ", time_now.strftime("%Hh%Mm%Ss"),
-              "compteur:", compteur, "time_start:", time_start_compteur)
+        print("Wait Product Disponibility (buy button not found) STATUS CODE:", response.status_code, "//", time_now.strftime("%Hh%Mm%Ss"), "counter:", compteur, "time_start:", time_start_compteur)
         # en mode debug, écrire le code html recu si bouton pas trouvé
         # file_saver.save_html_file_for_futur_analysis(file_name="check_disponibility_not_button", response=response)
         return response.status_code, form, None, None, None, None

@@ -16,6 +16,7 @@ def live_check_disponibility():
     gtm4wp_product_data = None
     price_to_one_product = None
     time_last_refresh_account =  datetime.datetime.now()
+    session_manager.force_new_session2()
     while response != 200 or button is None or url_to_post is None or product_id is None or gtm4wp_product_data is None or price_to_one_product is None:
 
         # keep session alive if more than 5 minutes
@@ -29,6 +30,8 @@ def live_check_disponibility():
             generate_connection.ask_for_cookies(proof_id)
             print("---- TEST CONNECTION (refresh) ----")
             generate_connection.connect_by_cookies()
+            print("---- REFRESH VERIFY SESSION ----")
+            session_manager.force_new_session2()
 
         # check product disponibility
         response, button, url_to_post, product_id, gtm4wp_product_data, price_to_one_product = check_disponibility(compteur, time_start)
@@ -47,7 +50,8 @@ def check_disponibility(compteur, time_start):
 
     time_now = datetime.datetime.now()
     time_start_compteur = time_now - time_start
-    response = requests.get(url_product_card)
+    session2 = session_manager.get_session2()
+    response = session2.get(url_product_card)
     if response.status_code != 200:
         print("FAIL ON STATUS-CODE, STATUS CODE: ", response.status_code, " // ", time_now.strftime("%Hh%Mm%Ss"),
               "compteur:", compteur, "time_start:", time_start_compteur)

@@ -239,15 +239,12 @@ def choose_pickup_point(driver, action):
     adress_input.send_keys(ADRESSE_CODE_POSTAL_ZONE_POINT_RETRAIT)
     print("select first address available on dynamic list")
     table = driver.find_element(By.ID, "widget_colissimo_autocomplete")
-    time.sleep(5)
+    time.sleep(8)
     choose_first_adress = table.find_element(
         By.CSS_SELECTOR,
         "td.widget_colissimo_autocomplete_li:not(.widget_colissimo_autocomplete_li_position)"
     )
     driver.execute_script("arguments[0].click();", choose_first_adress)
-    print("click on loup element")
-    loup_element = driver.find_element(By.CLASS_NAME, "widget_colissimo_loupe_img")
-    driver.execute_script("arguments[0].click();", loup_element)
     print("research on list pickup-point element by name")
     time.sleep(5)
     if action == "choose_pickup_point":

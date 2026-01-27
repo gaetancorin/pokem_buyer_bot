@@ -1,5 +1,7 @@
 # Pokem_Buyer_Bot
-![](static/project_name.png)
+[<img src="https://img.shields.io/badge/LinkedIn-Gaetan%20Corin%20–%20Data%20Engineer-blue.svg?logo=linkedin" alt="LinkedIn" style="vertical-align: middle;"/>](https://www.linkedin.com/in/gaetancorin/)
+
+![](static/pokem_buyer_bot_gif.gif)
 # Introduction
 This project is a Pokem buying bot designed to purchase Pokem products licence faster than other buyers.
 
